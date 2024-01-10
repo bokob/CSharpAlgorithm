@@ -11,6 +11,8 @@ namespace CSharpAlgorithm
         const char CIRCLE = '\u25cf';
         public TileType[,] Tile { get; private set; }
         public int Size { get; private set; }
+        public int DestY { get; private set; }
+        public int DestX { get; private set; }
 
         Player _player;
 
@@ -18,17 +20,20 @@ namespace CSharpAlgorithm
         {
             Empty,
             Wall,
-            Player,
         }
 
         public void Initialize(int size, Player player)
         {
             if (size % 2 == 0)
                 return;
+            
+            _player = player;
 
             Tile = new TileType[size, size];
             Size = size;
-            _player = player;
+
+            DestY = Size - 2;
+            DestX = Size - 2;
 
             GenerateSideWinderTree();
         }
@@ -151,6 +156,8 @@ namespace CSharpAlgorithm
                     // 플레이어 좌표 갖고 와서, 그 좌표와 y,x가 일치하면 플레이어 색
                     if(y==_player.PosY && x==_player.PosX)
                         Console.ForegroundColor = ConsoleColor.Blue;
+                    else if(y==DestY && x == DestX)
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                     else
                         Console.ForegroundColor = GetTileColor(Tile[y, x]);
                     Console.Write(CIRCLE);
