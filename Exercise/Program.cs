@@ -11,7 +11,7 @@ namespace Exercise
             {1, 0, 1, 1, 0, 0 },
             {0, 1, 0, 0, 0, 0 },
             {1, 1, 0, 0, 1, 0 },
-            {0, 0, 0, 0, 0, 1 },
+            {0, 0, 0, 1, 0, 1 },
             {0, 0, 0, 0, 1, 0 }
         };
 
@@ -25,45 +25,37 @@ namespace Exercise
             new List<int>(){4}
         };
 
-        bool[] visited = new bool[6];
-        // 1)  우선 now부터 방문하고
-        // 2) now와 연결된 정점들을 하나씩 확인해서, [미방문이면] 방문
-        public void DFS(int now)
+        public void BFS(int start)
         {
-            Console.WriteLine(now);
-            visited[now] = true;
+            bool[] found = new bool[6];
+            int[] parent = new int[6];
+            int[] distance = new int[6];
 
-            for(int next = 0; next<6;next++)
+            Queue<int> q = new Queue<int>();
+            q.Enqueue(start);
+            found[start] = true;
+            parent[start] = start;
+            distance[start] = 0;
+
+            while(q.Count > 0)
             {
-                if (adj[now, next] == 0) // 연결되어 있지 않으면 
-                    continue;
-                if (visited[next]) // 방문했으면
-                    continue;
-                DFS(next);
+                int now = q.Dequeue();
+                Console.WriteLine(now);
+
+                for(int next = 0; next < 6; next++)
+                {
+                    if (adj[now, next] == 0)
+                        continue;
+                    if (found[next])
+                        continue;
+                    q.Enqueue(next);
+                    found[next] = true;
+                    parent[next] = now;
+                    distance[next] = distance[now] + 1;
+                }
             }
         }
 
-        public void DFS2(int now)
-        {
-            Console.WriteLine(now);
-            visited[now] = true;
-
-            foreach(int next in adj2[now])
-            {
-                if (visited[next]) // 이미 방문했으면
-                    continue;
-
-                DFS2(next);
-            }
-        }
-
-        public void SearchAll()
-        {
-            visited = new bool[6];
-            for(int now = 0; now<now++; now++)
-                if (visited[now] == false)
-                    DFS(now);
-        }
     }
 
     class Program
@@ -71,7 +63,7 @@ namespace Exercise
         static void Main(string[] args)
         {
             Graph graph = new Graph();
-            graph.SearchAll();
+            graph.BFS(0);
         }
     }
 }
