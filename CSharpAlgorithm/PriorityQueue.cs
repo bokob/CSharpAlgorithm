@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Exercise
+namespace CSharpAlgorithm
 {
     class PriorityQueue<T> where T : IComparable<T>
     {
@@ -13,13 +14,13 @@ namespace Exercise
 
             int now = _heap.Count - 1;
             // 도장깨기 시작
-            while(now > 0)
+            while (now > 0)
             {
                 // 도장개기 시도
                 int next = (now - 1) / 2;
-                if (_heap[now].CompareTo(_heap[next] )< 0)
+                if (_heap[now].CompareTo(_heap[next]) < 0)
                     break;
-                
+
                 // 두 값 교체
                 T temp = _heap[now];
                 _heap[now] = _heap[next];
@@ -42,14 +43,14 @@ namespace Exercise
 
             // 역으로 내려가는 도장깨기 시작
             int now = 0;
-            while(true)
+            while (true)
             {
                 int left = 2 * now + 1;
                 int right = 2 * now + 2;
 
                 int next = now;
                 // 왼쪽 값이 현재값보다 크면, 왼쪽으로 이동
-                if(left <= lastIndex && _heap[next].CompareTo(_heap[left]) < 0)
+                if (left <= lastIndex && _heap[next].CompareTo(_heap[left]) < 0)
                     next = left;
                 // 오른쪽 값이 현재값(왼쪽 이동 포함)보다 크면, 오른쪽으로 이동
                 if (right <= lastIndex && _heap[next].CompareTo(_heap[right]) < 0)
@@ -72,40 +73,7 @@ namespace Exercise
             return ret;
         }
 
-        public int Count()
-        {
-            return _heap.Count;
-        }
+        public int Count { get { return _heap.Count; } }
     }
 
-    class Knight : IComparable<Knight>
-    {
-        public int Id { get; set; }
-
-        public int CompareTo(Knight other)
-        {
-            if (Id == other.Id) 
-                return 0;
-            return Id > other.Id ? 1 : -1;
-        }
-    }
-
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            PriorityQueue<Knight> q = new PriorityQueue<Knight>();
-            q.Push(new Knight() { Id = 20 });
-            q.Push(new Knight() { Id = 30 });
-            q.Push(new Knight() { Id = 40 });
-            q.Push(new Knight() { Id = 10 });
-            q.Push(new Knight() { Id = 05 });
-
-            while(q.Count() > 0)
-            {
-                Console.WriteLine(q.Pop().Id);
-            }
-
-        }
-    }
 }
